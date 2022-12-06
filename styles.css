@@ -1,0 +1,18 @@
+*, body {
+    border: 0;
+    padding : 0;
+    margin: 0;
+}
+
+table {
+    width: 100%;
+}
+
+tr {
+    background: red;
+    gap : 0;
+}
+
+td {
+    background: rgb(121, 121, 121)
+}
