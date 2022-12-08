@@ -1,3 +1,9 @@
-{
-    "chelut":"salut"
-}
+[
+    {
+        "name": "Danmachi",
+        "ep": 11,
+        "s": 4,
+        "ep left":0,
+        "rating":5
+    }
+]
