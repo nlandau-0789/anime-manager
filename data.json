@@ -3,7 +3,28 @@
         "name": "Danmachi",
         "ep": 11,
         "s": 4,
-        "ep left":0,
+        "ep_left":0,
+        "rating":5
+    },
+    {
+        "name": "SAO",
+        "ep": 25,
+        "s": 4,
+        "ep_left":0,
+        "rating":1
+    },
+    {
+        "name": "Moriarty the patriot",
+        "ep": 12,
+        "s": 2,
+        "ep_left":0,
+        "rating":5
+    },
+    {
+        "name": "Moriarty the patriot",
+        "ep": 12,
+        "s": 2,
+        "ep_left":0,
         "rating":5
     }
 ]

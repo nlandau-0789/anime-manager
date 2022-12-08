@@ -1,13 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap');
+
 *, body {
     border: 0;
     padding : 0;
     margin: 0;
+    font-family: 'Nunito Sans', sans-serif;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    margin: 25px 0;
+/*     margin: 25px 0; */
     font-size: 0.9em;
     font-family: sans-serif;
     min-width: 400px;
@@ -22,6 +25,11 @@ thead tr {
 
 th, td {
     padding: 12px 15px;
+    width: 25%;
+}
+
+th {
+    user-select: none;
 }
 
 tbody tr {
@@ -39,4 +47,29 @@ tbody tr:last-of-type {
 tbody tr.active-row {
     font-weight: bold;
     color: #009879;
+}
+
+.table-sortable th {
+	cursor: pointer;
+    position: relative;
+}
+
+.table-sortable .th-sort-asc::after {
+	content: "\25b4";
+}
+
+.table-sortable .th-sort-desc::after {
+	content: "\25be";
+}
+
+.table-sortable .th-sort-asc::after,
+.table-sortable .th-sort-desc::after {
+/* 	margin-left: 5px; */
+    position: absolute;
+    right: 10px;
+}
+
+.table-sortable .th-sort-asc,
+.table-sortable .th-sort-desc {
+	background: rgba(0, 0, 0, 0.1);
 }
