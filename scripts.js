@@ -1,5 +1,5 @@
 import data from './data.json' assert {type: 'json'}
-console.log(data)
+// console.log(data)
 
 function getTr(){
     let e = document.createElement("tr")
@@ -9,10 +9,12 @@ function getTr(){
     return e
 }
 
+let sortStack = Array()
+
 window.onload = () => {
     let b = document.querySelector("tbody")
-    console.log(data)
-    console.log(data.length)
+    // console.log(data)
+    // console.log(data.length)
     for(let i = 0; i < data.length; i++){
         let row = getTr()
         row.querySelector(":nth-child(1)").append(data[i].name)
@@ -23,27 +25,63 @@ window.onload = () => {
     }
     
     document.querySelectorAll(".table-sortable th").forEach(headerCell => {
+        headerCell.setAttribute("sortState", 0)
     	headerCell.addEventListener("click", () => {
     		const tableElement = headerCell.parentElement.parentElement.parentElement;
     		const headerIndex = Array.prototype.indexOf.call(headerCell.parentElement.children, headerCell);
-    		const currentIsAscending = headerCell.classList.contains("th-sort-desc");
-    
-    		sortTableByColumn(tableElement, headerIndex, currentIsAscending);
+
+            headerCell.setAttribute("sortState", (headerCell.getAttribute("sortState")+1)%3)
+            if(window.event.shiftKey){
+                if (sortStack.length > 1) {
+                    for (let i = 0; i < sortStack.length; i++){
+                        if (sortStack[i] == headerIndex){
+                            sortStack.splice(i,i)
+                        }
+                    }
+                } else {
+                    if (sortStack[0] == headerIndex){
+                        sortStack = []
+                    }
+                }
+                if (headerCell.getAttribute("sortState") > 0){
+                    sortStack.push(headerIndex)
+                }
+            } else {
+                if (headerCell.getAttribute("sortState") > 0){
+                    sortStack = [headerIndex]
+                } else {
+                    sortStack = []
+                }
+            }
+            console.log(sortStack)
+    		sortTableByColumn(tableElement);
     	});
     });
 }
 
-function sortTableByColumn(table, column, asc = true) {
-	const dirModifier = asc ? 1 : -1;
+let gt = [
+    (a,b) => (a > b)*2-1+ (a === b),
+    (a,b) => (a > b)*2-1+ (a === b),
+    (a,b) => (a > b)*2-1+ (a === b),
+    (a,b) => (a > b)*2-1+ (a === b)
+]
+
+function sortTableByColumn(table) {
 	const tBody = table.tBodies[0];
 	const rows = Array.from(tBody.querySelectorAll("tr"));
 
 	// Sort each row
 	const sortedRows = rows.sort((a, b) => {
-		const aColText = a.querySelector(`td:nth-child(${column + 1})`).textContent.trim();
-		const bColText = b.querySelector(`td:nth-child(${column + 1})`).textContent.trim();
-
-		return aColText > bColText ? (1 * dirModifier) : (-1 * dirModifier);
+        let res = 0;
+        for (let i of sortStack){
+		    let aColText = a.querySelector(`td:nth-child(${i + 1})`).textContent.trim();
+		    let bColText = b.querySelector(`td:nth-child(${i + 1})`).textContent.trim();
+            if (gt[i](aColText, bColText) !== 0) {
+                res = gt[i](aColText, bColText) * (table.querySelector(`th:nth-child(${i + 1})`).getAttribute("sortState")-1.5)*2
+                break
+            }
+        }
+		return res
 	});
 
 	// Remove all existing TRs from the table
@@ -56,6 +94,13 @@ function sortTableByColumn(table, column, asc = true) {
 
 	// Remember how the column is currently sorted
 	table.querySelectorAll("th").forEach(th => th.classList.remove("th-sort-asc", "th-sort-desc"));
-	table.querySelector(`th:nth-child(${column + 1})`).classList.toggle("th-sort-asc", asc);
-	table.querySelector(`th:nth-child(${column + 1})`).classList.toggle("th-sort-desc", !asc);
+
+    for (let i of sortStack){
+	    let j = table.querySelector(`th:nth-child(${i + 1})`)
+        if (j.getAttribute("sortState") == 1) {
+            j.classList.toggle("th-sort-desc", true)
+        } else {
+            j.classList.toggle("th-sort-asc", true)
+        }
+    }
 }
