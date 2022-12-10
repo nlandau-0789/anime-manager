@@ -21,6 +21,9 @@ window.onload = () => {
         row.querySelector(":nth-child(2)").append("EP: "+data[i].ep+", S:"+data[i].s)
         row.querySelector(":nth-child(3)").append(data[i].ep_left)
         row.querySelector(":nth-child(4)").append(data[i].rating)
+        row.setAttribute("name", data[i].name)
+        row.setAttribute("ep", data[i].ep)
+        row.setAttribute("s", data[i].s)
         b.appendChild(row)
     }
     
@@ -59,11 +62,19 @@ window.onload = () => {
     });
 }
 
+function getTextFromRow(e, i){
+    return e.querySelector(`td:nth-child(${i + 1})`).textContent.trim()
+}
+
+function compare(a, b){
+    return (a > b) * 2 + (a === b) - 1
+}
+
 let gt = [
-    (a,b) => (a > b)*2-1+ (a === b),
-    (a,b) => (a > b)*2-1+ (a === b),
-    (a,b) => (a > b)*2-1+ (a === b),
-    (a,b) => (a > b)*2-1+ (a === b)
+    (a,b) => compare(getTextFromRow(a, 0), getTextFromRow(b, 0)),
+    (a,b) => compare(+a.getAttribute("ep"), +b.getAttribute("ep")),
+    (a,b) => compare(+getTextFromRow(a, 2), +getTextFromRow(b, 2)),
+    (a,b) => compare(+getTextFromRow(a, 3), +getTextFromRow(b, 3))
 ]
 
 function sortTableByColumn(table) {
@@ -74,10 +85,8 @@ function sortTableByColumn(table) {
 	const sortedRows = rows.sort((a, b) => {
         let res = 0;
         for (let i of sortStack){
-		    let aColText = a.querySelector(`td:nth-child(${i + 1})`).textContent.trim();
-		    let bColText = b.querySelector(`td:nth-child(${i + 1})`).textContent.trim();
-            if (gt[i](aColText, bColText) !== 0) {
-                res = gt[i](aColText, bColText) * (table.querySelector(`th:nth-child(${i + 1})`).getAttribute("sortState")-1.5)*2
+            if (gt[i](a, b) !== 0) {
+                res = gt[i](a, b) * (table.querySelector(`th:nth-child(${i + 1})`).getAttribute("sortState")-1.5)*2
                 break
             }
         }

@@ -14,8 +14,8 @@
         "rating":1
     },
     {
-        "name": "Moriarty the patriot",
-        "ep": 12,
+        "name": "Tensura",
+        "ep": 24,
         "s": 2,
         "ep_left":0,
         "rating":5
@@ -25,6 +25,6 @@
         "ep": 12,
         "s": 2,
         "ep_left":0,
-        "rating":5
-    }
+        "rating":10
+    },
 ]
