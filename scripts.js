@@ -113,3 +113,18 @@ function sortTableByColumn(table) {
         }
     }
 }
+
+document.getElementById("add-button").addEventListener("click", add_anime);
+
+function add_anime(){
+    let anime = {
+        "name": prompt("Nom de l'anime :"),
+        "ep": parseInt(prompt("Episode :")),
+        "s": parseInt(prompt("Saison :")),
+        "ep_left": 0,
+        "rating": parseInt(prompt("Note (sur 10) :"))
+    }
+    data.push(anime)
+    document.querySelector("tbody").innerHTML = ""
+    window.onload()
+}
